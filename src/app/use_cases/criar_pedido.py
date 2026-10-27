@@ -4,8 +4,8 @@ from src.app.gateways.pedido_gateway import IPedidoGateway
 
 
 class CriarPedido:
-    def __init__(self, gateway: IPedidoGateway):
-        self.gateway = gateway
+    def __init__(self, pedido_gateway: IPedidoGateway):
+        self.pedido_gateway = pedido_gateway
 
     def executar(self, cliente: str, valor_original: float, tipo_desconto: str) -> Pedido:
         if tipo_desconto.lower() == "normal":
@@ -18,5 +18,9 @@ class CriarPedido:
             raise ValueError("Tipo de desconto inválido")
 
         pedido = Pedido(cliente, valor_original, desconto)
-        self.gateway.salvar(pedido)
+        self.pedido_gateway.salvar(pedido)
+
         return pedido
+
+    def listar_pedidos(self) -> list[Pedido]:
+        return self.pedido_gateway.listar()
