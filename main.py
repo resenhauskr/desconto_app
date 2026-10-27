@@ -1,17 +1,15 @@
-from src.models.desconto import DescontoNormal, DescontoPremium, DescontoVIP
-from src.models.pedido import Pedido
-from src.services.pedido_service import PedidoService
-
-
-def main():
-    service = PedidoService()
-
-    service.adicionar_pedido(Pedido("Leonardo", DescontoVIP(), 100))
-    service.adicionar_pedido(Pedido("Maria", DescontoNormal(), 200))
-    service.adicionar_pedido(Pedido("Carlos", DescontoPremium(), 50))
-
-    service.processar_pedidos()
-
+from src.app.use_cases.criar_pedido import CriarPedido
 
 if __name__ == "__main__":
-    main()
+    caso_de_uso = CriarPedido()
+
+    entradas = [
+        ("Leonardo", 100.0, "vip"),
+        ("Maria", 200.0, "normal"),
+        ("Carlos", 50.0, "premium"),
+    ]
+
+    for cliente, valor, tipo in entradas:
+        pedido = caso_de_uso.executar(cliente, valor, tipo)
+        print(f"Cliente: {pedido.cliente}")
+        print(f"Valor final: {pedido.valor_final()}")
